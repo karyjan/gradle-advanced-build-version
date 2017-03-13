@@ -48,10 +48,15 @@ class FileOutputOptions {
             project.getLogger().log(LogLevel.WARN, "could not make unaligned file. You should use android gradle 1.3.1 and above")
             return;
         }
-        def file = variant.outputs[0].packageApplication.outputFile
-        variant.outputs[0].packageApplication.outputFile =
-                new File(file.parent, fileName + "-unaligned.apk")
-    }
 
+        if(androidGradlePlugin != null && androidGradlePlugin.version.startsWith("2.2")) {
+            def version = Float.parseFloat(androidGradlePlugin.version.substring(0,2));
+            if(version <=2.2 ){
+                def file = variant.outputs[0].packageApplication.outputFile
+                variant.outputs[0].packageApplication.outputFile =
+                        new File(file.parent, fileName + "-unaligned.apk")
+            }
+        }
+    }
 
 }
